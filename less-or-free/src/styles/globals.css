@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --background: #0a0a0f;
+  --surface: #12121a;
+  --surface-elevated: #1a1a2e;
+  --border-color: #2a2a3e;
+  --text-primary: #e4e4e7;
+  --text-secondary: #71717a;
+  --accent-primary: #00ff88;
+  --accent-secondary: #00d4ff;
+  --danger: #ff4444;
+  --warning: #ffaa00;
+  --badge-green: #22c55e;
+  --badge-yellow: #eab308;
+  --badge-red: #ef4444;
+  --font-body-family: 'Inter', sans-serif;
+  --font-heading-family: 'JetBrains Mono', monospace;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-border: var(--border-color);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-accent-primary: var(--accent-primary);
+  --color-accent-secondary: var(--accent-secondary);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  --color-badge-green: var(--badge-green);
+  --color-badge-yellow: var(--badge-yellow);
+  --color-badge-red: var(--badge-red);
+  --font-sans: var(--font-body-family);
+  --font-mono: var(--font-heading-family);
+  --font-heading: var(--font-heading-family);
+  --font-body: var(--font-body-family);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) var(--background);
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+::selection {
+  background: rgba(0, 255, 136, 0.2);
+  color: var(--accent-primary);
+}
+
+body {
+  background: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-body-family);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading-family);
+}
