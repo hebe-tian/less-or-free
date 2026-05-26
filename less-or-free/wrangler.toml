@@ -20,6 +20,3 @@ database_id = "placeholder-change-me"
 [[kv_namespaces]]
 binding = "KV"
 id = "placeholder-change-me"
-
-[vars]
-ADMIN_PASSWORD = "change-me-in-production"

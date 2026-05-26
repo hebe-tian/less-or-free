@@ -143,12 +143,16 @@ database_id = "your-d1-database-id"
 [[kv_namespaces]]
 binding = "KV"
 id = "your-kv-namespace-id"
-
-[vars]
-ADMIN_PASSWORD = "your-secure-password"
 ```
 
-### 2. 初始化数据库
+### 2. 配置密钥
+
+```bash
+# 设置管理员密码（加密存储，不落盘到代码仓库）
+npx wrangler secret put ADMIN_PASSWORD
+```
+
+### 3. 初始化数据库
 
 ```bash
 # 创建 D1 数据库
@@ -161,7 +165,7 @@ wrangler d1 execute less-or-free-db --file=schema.sql
 wrangler d1 execute less-or-free-db --file=seed.sql
 ```
 
-### 3. 部署
+### 4. 部署
 
 ```bash
 npm run deploy

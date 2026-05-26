@@ -56,20 +56,6 @@ wrangler d1 execute less-or-free-db --remote --file=seed.sql
 将第一步和第二步中获取的 ID 填入项目根目录的 `wrangler.toml`：
 
 ```toml
-name = "less-or-free"
-compatibility_date = "2024-12-30"
-compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
-
-main = ".open-next/worker.js"
-
-[assets]
-directory = ".open-next/assets"
-binding = "ASSETS"
-
-[[services]]
-binding = "WORKER_SELF_REFERENCE"
-service = "less-or-free"
-
 [[d1_databases]]
 binding = "DB"
 database_name = "less-or-free-db"
@@ -78,16 +64,42 @@ database_id = "你的D1数据库ID"        # 替换为第一步记录的 Databas
 [[kv_namespaces]]
 binding = "KV"
 id = "你的KV命名空间ID"              # 替换为第二步记录的 Namespace ID
-
-[vars]
-ADMIN_PASSWORD = "你的管理员密码"      # 建议改为环境变量，不提交到代码仓库
 ```
 
-> 注意：`wrangler.toml` 中的配置用于本地开发（`npm run preview`）和命令行部署（`npm run deploy`）。
+> ⚠️ **安全提醒**：`wrangler.toml` 会被提交到 Git 仓库。`database_id` 和 KV `id` 属于资源标识符（非密钥），在私有仓库中可接受。**绝不要将 `ADMIN_PASSWORD` 等密钥写在 `wrangler.toml` 的 `[vars]` 中**。
 
 ---
 
-## 第四步：部署到 Cloudflare Workers
+## 第四步：配置密钥（ADMIN_PASSWORD）
+
+### 生产环境：使用 Cloudflare Secret（推荐）
+
+密钥必须通过 Cloudflare 的加密 Secret 机制存储，不会落盘到代码仓库：
+
+```bash
+# 通过命令行设置（交互式输入密码，加密存储）
+npx wrangler secret put ADMIN_PASSWORD
+```
+
+或在 Cloudflare Dashboard 中设置：
+
+1. 进入 Workers 项目 **Settings** > **Environment variables**
+2. 点击 **Add variable**
+3. 变量名输入 `ADMIN_PASSWORD`，值输入你的管理员密码
+4. 点击 **Encrypt** 确保加密存储
+5. 点击 **Save**
+
+### 本地开发：使用 .dev.vars
+
+本地开发时，密钥写在 `.dev.vars` 文件中（已添加到 `.gitignore`，不会提交）：
+
+```
+ADMIN_PASSWORD=your-local-dev-password
+```
+
+---
+
+## 第五步：部署到 Cloudflare Workers
 
 ### 方式一：命令行部署
 
@@ -111,7 +123,7 @@ npm run deploy
 
 ---
 
-## 第五步：验证部署
+## 第六步：验证部署
 
 部署成功后，Cloudflare 会分配一个 `*.workers.dev` 域名。访问该域名验证：
 
@@ -165,7 +177,7 @@ npm run deploy
 
 ### API 返回 401
 
-确认环境变量 `ADMIN_PASSWORD` 已在 `wrangler.toml` 的 `[vars]` 中配置，或通过 Cloudflare Dashboard 的 Workers Settings > Environment variables 配置。
+确认密钥 `ADMIN_PASSWORD` 已通过 `wrangler secret put` 或 Cloudflare Dashboard 的加密环境变量配置。**不要**将密码写在 `wrangler.toml` 中。
 
 ### 本地开发
 
