@@ -1,15 +1,12 @@
+import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { generateId, now } from './utils'
 
 const SESSION_COOKIE_NAME = 'admin_token'
 const SESSION_DURATION_HOURS = 24
 
-export function getAdminPassword(request: Request): string {
-  const env = (request as unknown as { env: Env }).env
-  if (env?.ADMIN_PASSWORD) return env.ADMIN_PASSWORD
-
-  const cf = (request as unknown as { cf?: { env: CloudflareEnv } }).cf
-  if (cf?.env?.ADMIN_PASSWORD) return cf.env.ADMIN_PASSWORD
-
+export async function getAdminPassword(): Promise<string> {
+  const { env } = await getCloudflareContext()
+  if (env.ADMIN_PASSWORD) return env.ADMIN_PASSWORD
   return 'admin123'
 }
 

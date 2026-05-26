@@ -1,12 +1,10 @@
-export const runtime = 'edge'
-
 import type { NextRequest } from 'next/server'
 import { success, error } from '@/lib/utils'
 import { getDb } from '@/lib/db'
 import { createSession, getAdminPassword, setSessionCookie } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
-  const db = getDb(request)
+  const db = await getDb()
 
   try {
     const body = await request.json() as { password?: string }
@@ -16,7 +14,7 @@ export async function POST(request: NextRequest) {
       return Response.json(error(400, 'Password is required'), { status: 400 })
     }
 
-    const adminPassword = getAdminPassword(request)
+    const adminPassword = await getAdminPassword()
     if (password !== adminPassword) {
       return Response.json(error(401, 'Invalid password'), { status: 401 })
     }

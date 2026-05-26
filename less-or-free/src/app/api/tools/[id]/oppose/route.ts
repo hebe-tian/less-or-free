@@ -1,5 +1,3 @@
-export const runtime = 'edge'
-
 import { success, error, generateId, now } from '@/lib/utils'
 import { getDb } from '@/lib/db'
 import { isValidFingerprint } from '@/lib/fingerprint'
@@ -11,7 +9,7 @@ export async function POST(
 ) {
   try {
     const { id } = await params
-    const db = getDb(request)
+    const db = await getDb()
     const body = await request.json() as { fingerprint?: string }
     const { fingerprint } = body
 

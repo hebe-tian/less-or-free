@@ -1,12 +1,10 @@
-export const runtime = 'edge'
-
 import { success, error } from '@/lib/utils'
 import { getDb, getToolList } from '@/lib/db'
 import { NextRequest } from 'next/server'
 
 export async function GET(request: NextRequest) {
   try {
-    const db = getDb(request)
+    const db = await getDb()
     const { searchParams } = request.nextUrl
 
     const result = await getToolList({

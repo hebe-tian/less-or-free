@@ -1,5 +1,3 @@
-export const runtime = 'edge'
-
 import { success, error } from '@/lib/utils'
 import { getDb } from '@/lib/db'
 import { isValidFingerprint } from '@/lib/fingerprint'
@@ -11,7 +9,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const db = getDb(request)
+    const db = await getDb()
     const { searchParams } = request.nextUrl
     const fingerprint = searchParams.get('fingerprint')
 

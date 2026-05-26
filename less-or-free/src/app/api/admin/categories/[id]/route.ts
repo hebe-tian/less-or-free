@@ -1,12 +1,10 @@
-export const runtime = 'edge'
-
 import type { NextRequest } from 'next/server'
 import { success, error, now } from '@/lib/utils'
 import { getDb } from '@/lib/db'
 import { requireAuth } from '@/lib/auth'
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const db = getDb(request)
+  const db = await getDb()
   const token = await requireAuth(request, db)
   if (!token) return Response.json(error(401), { status: 401 })
 
@@ -62,7 +60,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 }
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const db = getDb(request)
+  const db = await getDb()
   const token = await requireAuth(request, db)
   if (!token) return Response.json(error(401), { status: 401 })
 

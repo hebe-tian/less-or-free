@@ -1,13 +1,12 @@
 import { getKv } from './db'
 
 export async function checkRateLimit(
-  request: Request,
   key: string,
   limit: number,
   windowSeconds: number
 ): Promise<boolean> {
   try {
-    const kv = getKv(request)
+    const kv = await getKv()
     const current = await kv.get(key)
     const count = current ? parseInt(current, 10) : 0
 
@@ -25,7 +24,7 @@ export async function getCommentRateLimitKey(fingerprint: string): Promise<strin
   return `rate:comment:${fingerprint}:${today}`
 }
 
-export async function checkCommentRateLimit(request: Request, fingerprint: string): Promise<boolean> {
+export async function checkCommentRateLimit(fingerprint: string): Promise<boolean> {
   const key = await getCommentRateLimitKey(fingerprint)
-  return checkRateLimit(request, key, 10, 86400)
+  return checkRateLimit(key, 10, 86400)
 }

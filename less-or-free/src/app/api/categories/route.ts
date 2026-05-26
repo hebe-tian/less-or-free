@@ -1,12 +1,9 @@
-export const runtime = 'edge'
-
 import { success, error } from '@/lib/utils'
 import { getDb, getCategoriesWithCount } from '@/lib/db'
-import { NextRequest } from 'next/server'
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const db = getDb(request)
+    const db = await getDb()
     const categories = await getCategoriesWithCount(db)
     return Response.json(success(categories))
   } catch (e) {

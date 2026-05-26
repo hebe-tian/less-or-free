@@ -6,11 +6,11 @@
 
 - **框架**: Next.js 16 (App Router) + TypeScript
 - **样式**: Tailwind CSS 4
-- **部署**: Cloudflare Pages
+- **部署**: Cloudflare Workers
 - **数据库**: Cloudflare D1 (SQLite)
 - **缓存**: Cloudflare KV
-- **适配器**: @cloudflare/next-on-pages
-- **渲染策略**: SSG + On-Demand Revalidation（前台）、CSR（后台）、Edge Runtime（API）
+- **适配器**: @opennextjs/cloudflare
+- **渲染策略**: SSG + On-Demand Revalidation（前台）、CSR（后台）、Node.js Runtime（API）
 
 ## 项目结构
 
@@ -66,7 +66,8 @@ less-or-free/
 │       └── globals.css         # 全局样式与设计系统
 ├── schema.sql                  # 数据库建表语句
 ├── seed.sql                    # 分类种子数据
-├── wrangler.toml               # Cloudflare 配置
+├── wrangler.toml               # Cloudflare Workers 配置
+├── open-next.config.ts         # OpenNext 配置
 ├── next.config.ts
 └── package.json
 ```
@@ -127,7 +128,7 @@ npm run dev
 npm run build
 ```
 
-## 部署到 Cloudflare Pages
+## 部署到 Cloudflare Workers
 
 ### 1. 配置 wrangler.toml
 
@@ -163,8 +164,7 @@ wrangler d1 execute less-or-free-db --file=seed.sql
 ### 3. 部署
 
 ```bash
-npx @cloudflare/next-on-pages
-wrangler pages deploy .vercel/output/static
+npm run deploy
 ```
 
 ## 设计风格

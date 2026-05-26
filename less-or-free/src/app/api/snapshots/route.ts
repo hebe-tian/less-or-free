@@ -1,12 +1,9 @@
-export const runtime = 'edge'
-
 import { success, error } from '@/lib/utils'
 import { getDb } from '@/lib/db'
-import { NextRequest } from 'next/server'
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const db = getDb(request)
+    const db = await getDb()
     const snapshots = await db
       .prepare('SELECT id, version, description, created_at FROM snapshots ORDER BY version DESC')
       .all()

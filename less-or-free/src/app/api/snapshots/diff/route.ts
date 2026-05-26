@@ -1,5 +1,3 @@
-export const runtime = 'edge'
-
 import { success, error } from '@/lib/utils'
 import { getDb } from '@/lib/db'
 import { computeDiff, SnapshotTool } from '@/lib/diff'
@@ -7,7 +5,7 @@ import { NextRequest } from 'next/server'
 
 export async function GET(request: NextRequest) {
   try {
-    const db = getDb(request)
+    const db = await getDb()
     const { searchParams } = request.nextUrl
     const v1 = searchParams.get('v1')
     const v2 = searchParams.get('v2')

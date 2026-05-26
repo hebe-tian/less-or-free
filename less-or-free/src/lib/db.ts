@@ -1,22 +1,15 @@
+import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { generateId, now } from './utils'
 
-export function getDb(request: Request): D1Database {
-  const env = (request as unknown as { env: Env }).env
-  if (env?.DB) return env.DB
-
-  const cf = (request as unknown as { cf?: { env: CloudflareEnv } }).cf
-  if (cf?.env?.DB) return cf.env.DB
-
+export async function getDb(): Promise<D1Database> {
+  const { env } = await getCloudflareContext()
+  if (env.DB) return env.DB
   throw new Error('D1 database binding not found')
 }
 
-export function getKv(request: Request): KVNamespace {
-  const env = (request as unknown as { env: Env }).env
-  if (env?.KV) return env.KV
-
-  const cf = (request as unknown as { cf?: { env: CloudflareEnv } }).cf
-  if (cf?.env?.KV) return cf.env.KV
-
+export async function getKv(): Promise<KVNamespace> {
+  const { env } = await getCloudflareContext()
+  if (env.KV) return env.KV
   throw new Error('KV namespace binding not found')
 }
 

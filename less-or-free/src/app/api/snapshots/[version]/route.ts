@@ -1,8 +1,6 @@
-export const runtime = 'edge'
-
+import type { NextRequest } from 'next/server'
 import { success, error } from '@/lib/utils'
 import { getDb } from '@/lib/db'
-import { NextRequest } from 'next/server'
 
 export async function GET(
   request: NextRequest,
@@ -10,7 +8,7 @@ export async function GET(
 ) {
   try {
     const { version } = await params
-    const db = getDb(request)
+    const db = await getDb()
     const versionNum = parseInt(version)
 
     if (isNaN(versionNum)) {

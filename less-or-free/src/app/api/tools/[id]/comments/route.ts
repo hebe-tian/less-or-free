@@ -1,5 +1,3 @@
-export const runtime = 'edge'
-
 import { success, error, generateId, now, escapeHtml } from '@/lib/utils'
 import { getDb } from '@/lib/db'
 import { isValidFingerprint } from '@/lib/fingerprint'
@@ -12,7 +10,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params
-    const db = getDb(request)
+    const db = await getDb()
     const { searchParams } = request.nextUrl
     const page = parseInt(searchParams.get('page') || '1')
     const pageSize = 20
@@ -50,7 +48,7 @@ export async function POST(
 ) {
   try {
     const { id } = await params
-    const db = getDb(request)
+    const db = await getDb()
     const body = await request.json() as { fingerprint?: string; content?: string }
     const { fingerprint, content } = body
 
@@ -67,7 +65,7 @@ export async function POST(
       return Response.json(error(404, 'Tool not found'), { status: 404 })
     }
 
-    const allowed = await checkCommentRateLimit(request, fingerprint)
+    const allowed = await checkCommentRateLimit(fingerprint)
     if (!allowed) {
       return Response.json(error(429, 'Rate limit exceeded'), { status: 429 })
     }

@@ -1,12 +1,10 @@
-export const runtime = 'edge'
-
 import type { NextRequest } from 'next/server'
 import { success, error, isValidUrl } from '@/lib/utils'
 import { getDb, getToolList, createTool } from '@/lib/db'
 import { requireAuth } from '@/lib/auth'
 
 export async function GET(request: NextRequest) {
-  const db = getDb(request)
+  const db = await getDb()
   const token = await requireAuth(request, db)
   if (!token) return Response.json(error(401), { status: 401 })
 
@@ -33,7 +31,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const db = getDb(request)
+  const db = await getDb()
   const token = await requireAuth(request, db)
   if (!token) return Response.json(error(401), { status: 401 })
 
